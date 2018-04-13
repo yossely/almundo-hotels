@@ -24,9 +24,18 @@ class App {
 
     // Get all hotels
     router.get('/hotels', (req, res) => {
-      const hotels = this.db
-        .get('hotels')
-        .value();
+      // hotels to be returned - based on the query params
+      let hotels;
+
+      if (req.query.name && req.query.stars) {
+        hotels = this.getHotelsByNameAndStars(req.query.name, parseInt(req.query.stars, 10));
+      } else if (req.query.name && !req.query.stars) {
+        hotels = this.getHotelsByName(req.query.name);
+      } else if (!req.query.name && req.query.stars) {
+        hotels = this.getHotelsByStars(parseInt(req.query.stars, 10))
+      } else {
+        hotels = this.getAllHotels();
+      }
 
       res.json(hotels)
     })
@@ -47,6 +56,72 @@ class App {
    */
   private initDatabase() {
     this.db = low(adapter);
+  }
+
+  /**
+   * Get all Hotels from the database
+   */
+  private getAllHotels() {
+    console.log('get all hotels')
+    return this.db
+      .get('hotels')
+      .value();;
+  }
+
+  /**
+   * Get all hotels with the name receive in the parameter
+   *
+   * @param {string} name - Name of the Hotel required
+   */
+  private getHotelsByName(name: string) {
+    console.log(`get hotels named ${name}`);
+    return this.db
+      .get('hotels')
+      .filter((hotel) => {
+        // Transform the names with toLowerCase to compare them
+        const hotelName = hotel.name.toLowerCase();
+        name = name.toLowerCase();
+
+        // If the hotel name includes the name set in the parameter return it
+        return hotelName.includes(name);
+      })
+      .value();
+  }
+
+  /**
+   * Get all hotels with the number of the stars required
+   *
+   * @param {number} stars - Quantity of stars required for a hotel
+   */
+  private getHotelsByStars(stars: number) {
+    console.log(`get hotels with ${stars} stars`);
+    return this.db
+      .get('hotels')
+      .filter({
+        stars
+      })
+      .value();
+  }
+
+  /**
+   * Get all hotels with the name and number of stars required
+   *
+   * @param {string} name - Name of the Hotel required
+   * @param {number} stars - Quantity of stars required for a hotel
+   */
+  private getHotelsByNameAndStars(name: string, stars: number) {
+    console.log(`get hotels named ${name} and with ${stars} stars`);
+    return this.db
+      .get('hotels')
+      .filter((hotel) => {
+        // Transform the names with toLowerCase to compare them
+        const hotelName = hotel.name.toLowerCase();
+        name = name.toLowerCase();
+
+        // If the hotel name includes the name set in the parameter return it
+        return hotelName.includes(name) && hotel.stars === stars;
+      })
+      .value();
   }
 }
 
