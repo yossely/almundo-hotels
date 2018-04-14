@@ -41,11 +41,11 @@
   </mat-expansion-panel>
 </mat-accordion>
 
-<mat-card class="hotel-card">
+<mat-card class="hotel-card" *ngFor="let hotel of hotels">
   <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Hotel picture">
   <mat-card-content>
     <h1 class="mat-title hotel-name">{{hotel.name}}</h1>
-    <mat-icon *ngFor="let star of numberOfStars()" class="hotel-star">star</mat-icon>
+    <mat-icon *ngFor="let star of numberOfStars(hotel.stars)" class="hotel-star">star</mat-icon>
     <br>
     <mat-icon *ngFor="let amenity of hotel.amenities" :svgIcon="{{amenity}}" class="hotel-amenity"></mat-icon>
     <mat-divider [inset]="true" class="hotel-price-divider"></mat-divider>
