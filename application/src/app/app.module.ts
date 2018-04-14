@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { AppComponent } from './app.component';
+import { HotelsService } from './hotels.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { AppComponent } from './app.component';
     MatInputModule,
     MatCheckboxModule
   ],
-  providers: [],
+  providers: [HotelsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

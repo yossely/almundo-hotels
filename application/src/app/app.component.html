@@ -42,7 +42,7 @@
 </mat-accordion>
 
 <mat-card class="hotel-card" *ngFor="let hotel of hotels">
-  <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Hotel picture">
+  <img mat-card-image [src]="hotel.image" alt="Hotel picture">
   <mat-card-content>
     <h1 class="mat-title hotel-name">{{hotel.name}}</h1>
     <mat-icon *ngFor="let star of numberOfStars(hotel.stars)" class="hotel-star">star</mat-icon>
