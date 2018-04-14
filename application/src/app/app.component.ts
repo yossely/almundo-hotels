@@ -22,6 +22,11 @@ export class AppComponent {
    */
   starsFilter: Array<Object>;
 
+  /**
+   * Name to filter the hotels
+   */
+  nameFilter: string;
+
   constructor(
       private iconRegistry: MatIconRegistry,
       private sanitizer: DomSanitizer,
@@ -30,6 +35,7 @@ export class AppComponent {
     this.registerAmenitiesIcons();
     this.initStarsFilter();
 
+    this.nameFilter = '';
     this.hotels = this.hotelsService.hotels;
   }
 
@@ -177,5 +183,19 @@ export class AppComponent {
    */
   filterHotelsListByStars() {
     console.log('stars filter changed, filter hotels list - Not implemented yet');
+  }
+
+  /**
+   * Filter hotels list by name
+   * If current nameFilter is not empty, request the hotels filtered by it, otherwise
+   * request all hotels again
+   */
+  filterHotelsListByName() {
+    if (this.nameFilter !== '') {
+      console.log('filter hotels list by name');
+      this.hotelsService.filterHotelsByName(this.nameFilter);
+    } else {
+      this.hotelsService.getAllHotels();
+    }
   }
 }

@@ -18,9 +18,9 @@
         <label for="hotel-name" class="mat-body-2 filter-title">Nombre del hotel</label>
         <br>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Ingrese el nombre del hotel" name="hotel-name">
+          <input matInput placeholder="Ingrese el nombre del hotel" name="hotel-name" [(ngModel)]="nameFilter">
         </mat-form-field>
-        <button mat-raised-button color="primary">Aceptar</button>
+        <button mat-raised-button color="primary" (click)="filterHotelsListByName()">Aceptar</button>
       </mat-card-content>
     </mat-card>
 
