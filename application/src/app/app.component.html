@@ -10,6 +10,34 @@
         <h3 class="mat-title filter-title">Filtrar</h3>
       </mat-panel-title>
     </mat-expansion-panel-header>
+
+    <!-- Filter by Name -->
+    <mat-card class="filter-card">
+      <mat-card-content>
+        <mat-icon class="filter-title">search</mat-icon>
+        <label for="hotel-name" class="mat-body-2 filter-title">Nombre del hotel</label>
+        <br>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Ingrese el nombre del hotel" name="hotel-name">
+        </mat-form-field>
+        <button mat-raised-button color="primary">Aceptar</button>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Filter by Stars -->
+    <mat-card class="filter-card">
+      <mat-card-content>
+        <mat-icon class="filter-title">star</mat-icon>
+        <label for="hotel-stars" class="mat-body-2 filter-title">Estrellas</label>
+        <br>
+        <mat-checkbox *ngFor="let starRating of starsFilter" [(ngModel)]="starRating.isActive"
+          (change)="filterHotelsListByStars()"
+          class="star-rating-checkbox">
+          {{starRating.name === 'all'? 'Todas las estrellas' : ''}}
+          <mat-icon *ngFor="let star of starRating.stars" class="hotel-star">star</mat-icon>
+        </mat-checkbox>
+      </mat-card-content>
+    </mat-card>
   </mat-expansion-panel>
 </mat-accordion>
 

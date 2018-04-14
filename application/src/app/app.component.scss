@@ -17,13 +17,9 @@
     color: #3f51b5;
   }
 
-  .hotel-star {
-    color: #ffbb00;
-    margin-bottom: 16px;
-  }
-
   .hotel-amenity {
     margin-right: 8px;
+    margin-top: 16px;
   }
 
   .hotel-price-divider {
@@ -38,6 +34,27 @@
     }
   }
 
+}
+
+.hotel-card, .filter-card {
+  .hotel-star {
+    color: #ffbb00;
+  }
+}
+
+.filter-card {
+  padding: 16px;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+
+  .filter-title {
+    color: #e16800;
+  }
+
+  .star-rating-checkbox {
+    display: block;
+    margin-top: 16px;
+  }
 }
 
 .center-text {
