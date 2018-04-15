@@ -80,6 +80,10 @@
         h3 {
           color: #e16800;
           display: inline;
+
+          &.mat-display-1 {
+            font-weight: 500;
+          }
         }
       }
     }
