@@ -30,6 +30,11 @@
         <mat-icon class="filter-title">star</mat-icon>
         <label for="hotel-stars" class="mat-body-2 filter-title">Estrellas</label>
         <br>
+        <mat-checkbox [(ngModel)]="allStarsFilter"
+          (change)="filterHotelsListByStars(true)"
+          class="star-rating-checkbox">
+          Todas las estrellas
+        </mat-checkbox>
         <mat-checkbox *ngFor="let starRating of starsFilter" [(ngModel)]="starRating.isActive"
           (change)="filterHotelsListByStars()"
           class="star-rating-checkbox">

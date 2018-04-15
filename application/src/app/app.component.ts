@@ -18,9 +18,14 @@ export class AppComponent {
   hotels: Array<Hotel>;
 
   /**
+   * This will control whether or not filter the hotels list by all stars
+   */
+  allStarsFilter: boolean;
+
+  /**
    * This array will handle the filter by stars functionality (checkbox)
    */
-  starsFilter: Array<Object>;
+  starsFilter: Array<any>;
 
   /**
    * Name to filter the hotels
@@ -35,6 +40,7 @@ export class AppComponent {
     this.registerAmenitiesIcons();
     this.initStarsFilter();
 
+    this.allStarsFilter = true;
     this.nameFilter = '';
     this.hotels = this.hotelsService.hotels;
   }
@@ -146,10 +152,6 @@ export class AppComponent {
   initStarsFilter(): void {
     this.starsFilter = [
       {
-        name: 'all',
-        isActive: true
-      },
-      {
         name: '5 stars',
         stars: new Array(5).fill(5),
         isActive: false
@@ -180,9 +182,70 @@ export class AppComponent {
   /**
    * Filter hotels list by stars
    * This function is triggered every time the stars checkbox filter changes
+   *
+   * @param {boolean} hasAllFilterBeenSelected - Indicates if the `all` stars filter has been selected
    */
-  filterHotelsListByStars() {
-    console.log('stars filter changed, filter hotels list - Not implemented yet');
+  filterHotelsListByStars(hasAllFilterBeenSelected: boolean = false) {
+    // If the filter `All stars` has been selected, unselect the rest of stars
+    if (hasAllFilterBeenSelected) {
+      this.unselectAllFilterStars();
+    }
+
+    if (this.isAnyStarsSelectedToFilter()) {
+      console.log(`filter hotels list with ${this.getStarsFilterSelected()} stars`);
+      this.allStarsFilter = false;
+      this.hotelsService.filterHotelsByStars(this.getStarsFilterSelected());
+    } else {
+      console.log('get all hotels');
+      this.allStarsFilter = true;
+      this.hotelsService.getAllHotels();
+    }
+  }
+
+  /**
+   * Check if there is some star filter selected different than the `all` filter
+   *
+   * @returns {boolean} true - There is at least ONE star filter selected
+   *                    false - There's NO star filter selected
+   */
+  isAnyStarsSelectedToFilter(): boolean {
+    let isThere = false;
+
+    for (let index = 0; index < this.starsFilter.length; index++) {
+      if (this.starsFilter[index].isActive) {
+        isThere = true;
+        break; // break for when find an active filter
+      }
+    }
+
+    return isThere;
+  }
+
+  /**
+   * Get the number of stars that has been selected by the user
+   * Note: This function only returns the first star filter selected
+   *
+   * @returns {number} Number of star filter selected
+   */
+  getStarsFilterSelected(): number {
+    let starsSelected = -1;
+
+    this.starsFilter.forEach(starFilter => {
+      if (starFilter.isActive) {
+        starsSelected = starFilter.stars.length;
+      }
+    });
+
+    return starsSelected;
+  }
+
+  /**
+   * Mark as unselect all the stars in the filter
+   */
+  unselectAllFilterStars() {
+    this.starsFilter.forEach(starFilter => {
+      starFilter.isActive = false;
+    });
   }
 
   /**

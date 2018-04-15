@@ -72,4 +72,28 @@ export class HotelsService {
       });
   }
 
+  /**
+   * Get hotels information that have the number of stars received via parameter
+   *
+   * @param {number} stars - Filter hotels by stars
+   */
+  filterHotelsByStars(stars: number) {
+    return this.http.get(`api/hotels?stars=${stars}`)
+      // Clear the hotels array to set the new results on it
+      .do(() => {
+        this.hotels.length = 0;
+      })
+      // Get the hotels array and return one by one
+      .switchMap((hotels: Array<Hotel>) => hotels)
+      // Set image url for every hotel
+      .map((hotel: Hotel) => {
+        hotel.image = 'assets/images/hotels/' + hotel.image;
+        return hotel;
+      })
+      // Push every hotel into the `hotels` property
+      .subscribe((hotel: Hotel) => {
+        this.hotels.push(hotel);
+      });
+  }
+
 }
