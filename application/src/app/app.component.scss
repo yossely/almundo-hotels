@@ -1,66 +1,74 @@
 // Import all the tools needed to customize the theme and extract parts of it
 @import '~@angular/material/theming';
 
-.filter-title {
-  margin: 0;
-  color: #3f51b5;
-}
-
-.hotel-card {
+.container {
   margin: 16px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 400px;
-  width: 80%;
 
-  .hotel-name {
-    color: #3f51b5;
-  }
-
-  .hotel-amenity {
-    margin-right: 8px;
-    margin-top: 16px;
-  }
-
-  .hotel-price-divider {
+  .filters-side {
     margin-bottom: 16px;
-    margin-top: 16px;
-  }
 
-  .hotel-price {
-    color: #e16800;
-    h3 {
-      display: inline;
+    .filter-title {
+      margin: 0;
+      color: #3f51b5;
+    }
+
+    .filter-card {
+      padding: 16px;
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+
+      .filter-title {
+        color: #e16800;
+      }
+
+      .star-rating-checkbox {
+        display: block;
+        margin-top: 16px;
+      }
     }
   }
 
-}
+  .hotels-side {
+    .hotel-card {
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 400px;
+      width: 80%;
 
-.hotel-card, .filter-card {
-  .hotel-star {
-    color: #ffbb00;
+      .hotel-name {
+        color: #3f51b5;
+      }
+
+      .hotel-amenity {
+        margin-right: 8px;
+        margin-top: 16px;
+      }
+
+      .hotel-price-divider {
+        margin-bottom: 16px;
+        margin-top: 16px;
+      }
+
+      .hotel-price {
+        color: #e16800;
+        h3 {
+          display: inline;
+        }
+      }
+    }
+
+    .no-hotels {
+      margin: 16px;
+    }
   }
-}
 
-.filter-card {
-  padding: 16px;
-  padding-bottom: 8px;
-  margin-bottom: 8px;
-
-  .filter-title {
-    color: #e16800;
-  }
-
-  .star-rating-checkbox {
-    display: block;
-    margin-top: 16px;
+  .filters-side, .hotels-side {
+    .hotel-star {
+      color: #ffbb00;
+    }
   }
 }
 
 .center-text {
   text-align: center;
-}
-
-.no-hotels {
-  margin: 16px;
 }

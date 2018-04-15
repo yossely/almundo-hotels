@@ -14,6 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { AppComponent } from './app.component';
 import { HotelsService } from './hotels.service';
 
@@ -25,6 +27,7 @@ import { HotelsService } from './hotels.service';
     BrowserModule,
     HttpClientModule,
     FormsModule,
+    FlexLayoutModule,
     // Material
     BrowserAnimationsModule,
     MatToolbarModule,

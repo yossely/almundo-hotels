@@ -3,71 +3,76 @@
   <img src="assets/images/logo-almundo.svg" alt="Almundo Logo">
 </mat-toolbar>
 
-<mat-accordion>
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <h3 class="mat-title filter-title">Filtrar</h3>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
+<div class="container">
+  <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxFlex>
+    <!-- Filters -->
+    <div fxFlex="30" class="filters-side">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h3 class="mat-title filter-title">Filtrar</h3>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
 
-    <!-- Filter by Name -->
-    <mat-card class="filter-card">
-      <mat-card-content>
-        <mat-icon class="filter-title">search</mat-icon>
-        <label for="hotel-name" class="mat-body-2 filter-title">Nombre del hotel</label>
-        <br>
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Ingrese el nombre del hotel" name="hotel-name" [(ngModel)]="nameFilter">
-        </mat-form-field>
-        <button mat-raised-button color="primary" (click)="filterHotelsList()">Aceptar</button>
-      </mat-card-content>
-    </mat-card>
+          <!-- Filter by Name -->
+          <mat-card class="filter-card">
+            <mat-card-content>
+              <mat-icon class="filter-title">search</mat-icon>
+              <label for="hotel-name" class="mat-body-2 filter-title">Nombre del hotel</label>
+              <br>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Ingrese el nombre del hotel" name="hotel-name" [(ngModel)]="nameFilter">
+              </mat-form-field>
+              <button mat-raised-button color="primary" (click)="filterHotelsList()">Aceptar</button>
+            </mat-card-content>
+          </mat-card>
 
-    <!-- Filter by Stars -->
-    <mat-card class="filter-card">
-      <mat-card-content>
-        <mat-icon class="filter-title">star</mat-icon>
-        <label for="hotel-stars" class="mat-body-2 filter-title">Estrellas</label>
-        <br>
-        <mat-checkbox [(ngModel)]="allStarsFilter"
-          (change)="filterHotelsList(true)"
-          class="star-rating-checkbox">
-          Todas las estrellas
-        </mat-checkbox>
-        <mat-checkbox *ngFor="let starRating of starsFilter" [(ngModel)]="starRating.isActive"
-          (change)="filterHotelsList()"
-          class="star-rating-checkbox">
-          {{starRating.name === 'all'? 'Todas las estrellas' : ''}}
-          <mat-icon *ngFor="let star of starRating.stars" class="hotel-star">star</mat-icon>
-        </mat-checkbox>
-      </mat-card-content>
-    </mat-card>
-  </mat-expansion-panel>
-</mat-accordion>
+          <!-- Filter by Stars -->
+          <mat-card class="filter-card">
+            <mat-card-content>
+              <mat-icon class="filter-title">star</mat-icon>
+              <label for="hotel-stars" class="mat-body-2 filter-title">Estrellas</label>
+              <br>
+              <mat-checkbox [(ngModel)]="allStarsFilter" (change)="filterHotelsList(true)" class="star-rating-checkbox">
+                Todas las estrellas
+              </mat-checkbox>
+              <mat-checkbox *ngFor="let starRating of starsFilter" [(ngModel)]="starRating.isActive" (change)="filterHotelsList()" class="star-rating-checkbox">
+                {{starRating.name === 'all'? 'Todas las estrellas' : ''}}
+                <mat-icon *ngFor="let star of starRating.stars" class="hotel-star">star</mat-icon>
+              </mat-checkbox>
+            </mat-card-content>
+          </mat-card>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <!-- Hotels List -->
+    <div fxFlex="60" class="hotels-side">
+      <mat-card class="hotel-card" *ngFor="let hotel of hotels">
+        <img mat-card-image [src]="hotel.image" alt="Hotel picture">
+        <mat-card-content>
+          <h1 class="mat-title hotel-name">{{hotel.name}}</h1>
+          <mat-icon *ngFor="let star of numberOfStars(hotel.stars)" class="hotel-star">star</mat-icon>
+          <br>
+          <mat-icon *ngFor="let amenity of hotel.amenities" :svgIcon="{{amenity}}" class="hotel-amenity"></mat-icon>
+          <mat-divider [inset]="true" class="hotel-price-divider"></mat-divider>
+          <!-- Price -->
+          <div class="center-text">
+            <h3 class="mat-caption">Precio por noche por habitación</h3>
+            <div class="hotel-price">
+              <h3 class="mat-display-1">ARS</h3>
+              <h3 class="mat-display-2">{{hotel.price}}</h3>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" class="button-full-width">Ver Hotel</button>
+        </mat-card-actions>
+      </mat-card>
 
-<mat-card class="hotel-card" *ngFor="let hotel of hotels">
-  <img mat-card-image [src]="hotel.image" alt="Hotel picture">
-  <mat-card-content>
-    <h1 class="mat-title hotel-name">{{hotel.name}}</h1>
-    <mat-icon *ngFor="let star of numberOfStars(hotel.stars)" class="hotel-star">star</mat-icon>
-    <br>
-    <mat-icon *ngFor="let amenity of hotel.amenities" :svgIcon="{{amenity}}" class="hotel-amenity"></mat-icon>
-    <mat-divider [inset]="true" class="hotel-price-divider"></mat-divider>
-    <!-- Price -->
-    <div class="center-text">
-      <h3 class="mat-caption">Precio por noche por habitación</h3>
-      <div class="hotel-price">
-        <h3 class="mat-display-1">ARS</h3>
-        <h3 class="mat-display-2">{{hotel.price}}</h3>
+      <div *ngIf="hotels.length === 0" class="no-hotels">
+        <h3 class="mat-body-1">Lo siento, no hay hoteles que coincidan con su filtro.</h3>
       </div>
     </div>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-raised-button color="primary" class="button-full-width">Ver Hotel</button>
-  </mat-card-actions>
-</mat-card>
-
-<div *ngIf="hotels.length === 0" class="no-hotels">
-  <h3 class="mat-body-1">Lo siento, no hay hoteles que coincidan con su filtro.</h3>
+  </div>
 </div>
