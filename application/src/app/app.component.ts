@@ -33,10 +33,10 @@ export class AppComponent {
   nameFilter: string;
 
   constructor(
-      private iconRegistry: MatIconRegistry,
-      private sanitizer: DomSanitizer,
-      private hotelsService: HotelsService
-    ) {
+    private iconRegistry: MatIconRegistry,
+    private sanitizer: DomSanitizer,
+    private hotelsService: HotelsService
+  ) {
     this.registerAmenitiesIcons();
     this.initStarsFilter();
 
@@ -229,20 +229,19 @@ export class AppComponent {
 
   /**
    * Get the number of stars that has been selected by the user
-   * Note: This function only returns the first star filter selected
    *
-   * @returns {number} Number of star filter selected
+   * @returns {string} Stars filter selected (Example: 3,2,1)
    */
-  getStarsFilterSelected(): number {
-    let starsSelected = -1;
+  getStarsFilterSelected(): string {
+    const starsSelected = Array<number>();
 
     this.starsFilter.forEach(starFilter => {
       if (starFilter.isActive) {
-        starsSelected = starFilter.stars.length;
+        starsSelected.push(starFilter.stars.length);
       }
     });
 
-    return starsSelected;
+    return starsSelected.join(',');
   }
 
   /**

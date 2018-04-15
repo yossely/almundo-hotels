@@ -53,18 +53,18 @@ export class HotelsService {
    * contains the name received via parameter and
    *
    * @param {string} name - Filter hotels by this name
-   * @param {number} stars - Filter hotels by stars
+   * @param {string} stars - Stars filter selected (Example: 3,2,1)
    */
-  filterHotels(name: string, stars: number) {
+  filterHotels(name: string, stars: string) {
     // Construct the url based on the parameters received
     let filterUrl = '';
-    if (name !== '' && stars !== -1) { // both filtered are set
+    if (name !== '' && stars !== '') { // both filtered are set
       console.log('filter hotels by name and stars');
       filterUrl = `api/hotels?name=${name}&stars=${stars}`;
-    } else if (name !== '' && stars === -1) { // filter only by name
+    } else if (name !== '' && stars === '') { // filter only by name
       console.log('filter hotels by name');
       filterUrl = `api/hotels?name=${name}`;
-    } else if (name === '' && stars !== -1) { // filter only by stars
+    } else if (name === '' && stars !== '') { // filter only by stars
       console.log('filter hotels by stars');
       filterUrl = `api/hotels?stars=${stars}`;
     }
