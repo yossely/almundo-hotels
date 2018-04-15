@@ -20,7 +20,7 @@
         <mat-form-field class="example-full-width">
           <input matInput placeholder="Ingrese el nombre del hotel" name="hotel-name" [(ngModel)]="nameFilter">
         </mat-form-field>
-        <button mat-raised-button color="primary" (click)="filterHotelsListByName()">Aceptar</button>
+        <button mat-raised-button color="primary" (click)="filterHotelsList()">Aceptar</button>
       </mat-card-content>
     </mat-card>
 
@@ -31,12 +31,12 @@
         <label for="hotel-stars" class="mat-body-2 filter-title">Estrellas</label>
         <br>
         <mat-checkbox [(ngModel)]="allStarsFilter"
-          (change)="filterHotelsListByStars(true)"
+          (change)="filterHotelsList(true)"
           class="star-rating-checkbox">
           Todas las estrellas
         </mat-checkbox>
         <mat-checkbox *ngFor="let starRating of starsFilter" [(ngModel)]="starRating.isActive"
-          (change)="filterHotelsListByStars()"
+          (change)="filterHotelsList()"
           class="star-rating-checkbox">
           {{starRating.name === 'all'? 'Todas las estrellas' : ''}}
           <mat-icon *ngFor="let star of starRating.stars" class="hotel-star">star</mat-icon>

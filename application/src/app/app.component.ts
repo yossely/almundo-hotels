@@ -185,16 +185,22 @@ export class AppComponent {
    *
    * @param {boolean} hasAllFilterBeenSelected - Indicates if the `all` stars filter has been selected
    */
-  filterHotelsListByStars(hasAllFilterBeenSelected: boolean = false) {
+  filterHotelsList(hasAllFilterBeenSelected: boolean = false) {
     // If the filter `All stars` has been selected, unselect the rest of stars
     if (hasAllFilterBeenSelected) {
       this.unselectAllFilterStars();
     }
 
-    if (this.isAnyStarsSelectedToFilter()) {
-      console.log(`filter hotels list with ${this.getStarsFilterSelected()} stars`);
-      this.allStarsFilter = false;
-      this.hotelsService.filterHotelsByStars(this.getStarsFilterSelected());
+    if (this.isAnyStarsSelectedToFilter() || this.nameFilter !== '') {
+      console.log('filter hotels list');
+      this.hotelsService.filterHotels(this.nameFilter, this.getStarsFilterSelected());
+
+      // Check or uncheck the `all` stars filter whether there is some stars filter selected or not
+      if (this.isAnyStarsSelectedToFilter()) {
+        this.allStarsFilter = false;
+      } else {
+        this.allStarsFilter = true;
+      }
     } else {
       console.log('get all hotels');
       this.allStarsFilter = true;
@@ -246,19 +252,5 @@ export class AppComponent {
     this.starsFilter.forEach(starFilter => {
       starFilter.isActive = false;
     });
-  }
-
-  /**
-   * Filter hotels list by name
-   * If current nameFilter is not empty, request the hotels filtered by it, otherwise
-   * request all hotels again
-   */
-  filterHotelsListByName() {
-    if (this.nameFilter !== '') {
-      console.log('filter hotels list by name');
-      this.hotelsService.filterHotelsByName(this.nameFilter);
-    } else {
-      this.hotelsService.getAllHotels();
-    }
   }
 }
