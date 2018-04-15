@@ -28,11 +28,11 @@ class App {
       let hotels;
 
       if (req.query.name && req.query.stars) {
-        hotels = this.getHotelsByNameAndStars(req.query.name, parseInt(req.query.stars, 10));
+        hotels = this.getHotelsByNameAndStars(req.query.name, this.getStarsFromQueryParam(req.query.stars));
       } else if (req.query.name && !req.query.stars) {
         hotels = this.getHotelsByName(req.query.name);
       } else if (!req.query.name && req.query.stars) {
-        hotels = this.getHotelsByStars(parseInt(req.query.stars, 10))
+        hotels = this.getHotelsByStars(this.getStarsFromQueryParam(req.query.stars))
       } else {
         hotels = this.getAllHotels();
       }
@@ -91,25 +91,37 @@ class App {
   /**
    * Get all hotels with the number of the stars required
    *
-   * @param {number} stars - Quantity of stars required for a hotel
+   * @param {Array<number>} stars - Quantity of stars required for a hotel
    */
-  private getHotelsByStars(stars: number) {
+  private getHotelsByStars(stars: Array<number>) {
     console.log(`get hotels with ${stars} stars`);
     return this.db
       .get('hotels')
-      .filter({
-        stars
-      })
+      .filter((hotel) => stars.indexOf(hotel.stars) !== -1)
       .value();
+  }
+
+  /**
+   * Transform the stars received in the request from string to an array of integer that
+   * indicate the hotel stars that are going to be used in the filter
+   *
+   * @param {string} starsQuery - all the stars received in the query from the request (Example: 3,2)
+   */
+  private getStarsFromQueryParam(starsQuery: string): Array<number> {
+    const starsNumber = starsQuery.split(',').map((star: string) => {
+      return parseInt(star, 10);
+    });
+
+    return starsNumber;
   }
 
   /**
    * Get all hotels with the name and number of stars required
    *
    * @param {string} name - Name of the Hotel required
-   * @param {number} stars - Quantity of stars required for a hotel
+   * @param {Array<number>} stars - Quantity of stars required for a hotel
    */
-  private getHotelsByNameAndStars(name: string, stars: number) {
+  private getHotelsByNameAndStars(name: string, stars: Array<number>) {
     console.log(`get hotels named ${name} and with ${stars} stars`);
     return this.db
       .get('hotels')
@@ -118,8 +130,8 @@ class App {
         const hotelName = hotel.name.toLowerCase();
         name = name.toLowerCase();
 
-        // If the hotel name includes the name set in the parameter return it
-        return hotelName.includes(name) && hotel.stars === stars;
+        // If the hotel name includes the name and stars set in the parameter return it
+        return hotelName.includes(name) && (stars.indexOf(hotel.stars) !== -1);
       })
       .value();
   }
