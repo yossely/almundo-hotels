@@ -46,7 +46,7 @@ class App {
       }
 
       res.json(hotels)
-    })
+    });
 
     // Create a new hotel
     router.post('/hotel', (req, res) => {
@@ -70,7 +70,7 @@ class App {
           message: validationMessage
         });
       }
-    })
+    });
 
     // Remove hotel
     router.delete('/hotel/:hotelId', (req, res) => {
@@ -88,6 +88,35 @@ class App {
         res.status(400).send({
           message: `The hotel with id ${req.params.hotelId} does not exists`
         });
+      }
+    });
+
+    // Create a new hotel
+    router.put('/hotel/:hotelId', (req, res) => {
+      console.log('update hotel with id', req.params.hotelId);
+      const hotelInfo = req.body;
+
+      const validationMessage = this.isHotelValid(hotelInfo);
+
+      if (this.hotelExists(req.params.hotelId) && validationMessage === '') {
+        this.db.get('hotels')
+          .find({ id: req.params.hotelId })
+          .assign(hotelInfo)
+          .write();
+
+        res.json({
+          message: 'Great! Hotel updated successfully'
+        })
+      } else {
+        if (validationMessage !== '') {
+          res.status(400).send({
+            message: validationMessage
+          });
+        } else {
+          res.status(400).send({
+            message: `The hotel with id ${req.params.hotelId} does not exists`
+          });
+        }
       }
     })
 
