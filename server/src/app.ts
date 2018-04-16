@@ -6,6 +6,7 @@ const FileSync = require('lowdb/adapters/FileSync')
 const adapter = new FileSync('./database/data.json');
 // Allow CORS - because of the two servers (http-server and node server app)
 const cors = require('cors');
+const shortid = require('shortid');
 
 class App {
   public express;
@@ -14,6 +15,9 @@ class App {
 
   constructor() {
     this.express = express();
+    // Support JSON-encoded bodies
+    this.express.use(express.json());
+    // User cors
     this.express.use(cors());
 
     this.initDatabase();
@@ -44,11 +48,28 @@ class App {
       res.json(hotels)
     })
 
-    // Root route
-    router.get('/', (req, res) => {
-      res.json({
-        message: 'Hello World!!'
-      })
+    // Create a new hotel
+    router.post('/hotel', (req, res) => {
+      console.log('create new hotel');
+      const newHotel = req.body;
+      // Generate a unique `id` for the new hotel
+      newHotel.id = shortid.generate();
+
+      const validationMessage = this.isHotelValid(newHotel);
+
+      if (validationMessage === '') {
+        this.db.get('hotels')
+          .push(newHotel)
+          .write();
+
+        res.json({
+          message: 'Great! Hotel created successfully'
+        })
+      } else {
+        res.status(400).send({
+          message: validationMessage
+        });
+      }
     })
 
     // Initialize router for the express application
@@ -69,7 +90,7 @@ class App {
     console.log('get all hotels')
     return this.db
       .get('hotels')
-      .value();;
+      .value();
   }
 
   /**
@@ -138,6 +159,29 @@ class App {
         return hotelName.includes(name) && (stars.indexOf(hotel.stars) !== -1);
       })
       .value();
+  }
+
+  /**
+   * Check the hotel to validate that all the information required is present
+   *
+   * @param {Object} hotel - new hotel information to check
+   * @return {string} - error message if found or empty string if everything goes well
+   */
+  private isHotelValid(hotel): string {
+
+    if (!hotel.name || (typeof hotel.name !== 'string')) {
+      return 'Check hotel name';
+    } else if (!hotel.stars || (typeof hotel.stars !== 'number')) {
+      return 'Check hotel stars';
+    } else if (!hotel.price || (typeof hotel.price !== 'number')) {
+      return 'Check hotel price';
+    } else if (!hotel.image || (typeof hotel.image !== 'string')) {
+      return 'Check hotel image';
+    } else if (!hotel.amenities) {
+      return 'Check hotel amenities';
+    }
+
+    return '';
   }
 }
 
