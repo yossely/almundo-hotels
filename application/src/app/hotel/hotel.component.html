@@ -1,6 +1,6 @@
 <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxFlex class="hotel-card">
   <div fxFlex="30">
-    <img [src]="hotel.image" alt="Hotel picture">
+    <img [src]="hotel.image" #hotelImage alt="Hotel picture">
   </div>
   <div fxFlex="40" class="hotel-details">
     <h1 class="mat-title hotel-name">{{hotel.name}}</h1>

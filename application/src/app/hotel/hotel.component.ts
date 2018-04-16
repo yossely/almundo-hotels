@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 
 import { Hotel } from './../core/hotel.model';
 
@@ -7,12 +7,17 @@ import { Hotel } from './../core/hotel.model';
   templateUrl: './hotel.component.html',
   styleUrls: ['./hotel.component.scss']
 })
-export class HotelComponent implements OnInit {
+export class HotelComponent implements OnInit, AfterViewInit {
 
   /**
    * Current hotel displayed in the template
    */
   @Input() hotel: Hotel;
+
+  /**
+   * Handle the hotel image element in the template
+   */
+  @ViewChild('hotelImage') hotelImage: ElementRef;
 
   constructor() { }
 
@@ -27,6 +32,22 @@ export class HotelComponent implements OnInit {
    */
   numberOfStars(stars: number): Array<number> {
     return new Array(stars).fill(stars);
+  }
+
+  ngAfterViewInit() {
+    this.checkHotelImageLoaded();
+  }
+
+  /**
+   * Check if the hotel image load successfully, if not, set a default image
+   */
+  checkHotelImageLoaded() {
+    const testImage = new Image();
+    // testImage.onload = imageFound;
+    testImage.onerror = () => {
+      this.hotelImage.nativeElement.src = 'assets/images/no-hotel-image.jpg';
+    };
+    testImage.src = this.hotelImage.nativeElement.src;
   }
 
 }
