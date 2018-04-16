@@ -72,6 +72,25 @@ class App {
       }
     })
 
+    // Remove hotel
+    router.delete('/hotel/:hotelId', (req, res) => {
+      console.log('delete hotel with ID:', req.params.hotelId);
+
+      if (this.hotelExists(req.params.hotelId)) {
+        this.db.get('hotels')
+          .remove({ id: req.params.hotelId })
+          .write()
+
+        res.json({
+          message: 'Hotel removed successfully'
+        })
+      } else {
+        res.status(400).send({
+          message: `The hotel with id ${req.params.hotelId} does not exists`
+        });
+      }
+    })
+
     // Initialize router for the express application
     this.express.use('/', router);
   }
@@ -182,6 +201,25 @@ class App {
     }
 
     return '';
+  }
+
+  /**
+   * Check if the hotel exists based on the id received via parameter
+   *
+   * @param {string} hotelId - hotel id to find in the hotels list
+   * @return {boolean} - true - Hotel exists
+   *                     false - Hotel doesn't exist
+   */
+  private hotelExists(hotelId: string): boolean {
+    const hotelResult = this.db
+      .get('hotels')
+      .filter((hotel) => hotel.id === hotelId)
+      .value()
+
+    if (hotelResult.length > 0) {
+      return true;
+    }
+    return false;
   }
 }
 
