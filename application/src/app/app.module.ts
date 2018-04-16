@@ -19,10 +19,12 @@ import { AppComponent } from './app.component';
 import { HotelsService } from './core/hotels.service';
 
 import { HotelsModule } from './hotels/hotels.module';
+import { FilterComponent } from './filter/filter.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FilterComponent
   ],
   imports: [
     BrowserModule,
