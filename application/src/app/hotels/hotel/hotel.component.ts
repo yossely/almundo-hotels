@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 
-import { Hotel } from './../core/hotel.model';
+import { Hotel } from './../../core/hotel.model';
 
 @Component({
   selector: 'app-hotel',

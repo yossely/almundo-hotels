@@ -4,7 +4,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
 
 import { HotelsService } from './core/hotels.service';
-import { Hotel } from './core/hotel.model';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +11,6 @@ import { Hotel } from './core/hotel.model';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  /**
-   * Hotels information fetched from the API
-   */
-  hotels: Array<Hotel>;
 
   /**
    * This will control whether or not filter the hotels list by all stars
@@ -42,7 +37,6 @@ export class AppComponent {
 
     this.allStarsFilter = true;
     this.nameFilter = '';
-    this.hotels = this.hotelsService.hotels;
   }
 
   /**
