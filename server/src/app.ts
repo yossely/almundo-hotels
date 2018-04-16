@@ -4,6 +4,8 @@ import * as express from 'express';
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
 const adapter = new FileSync('./database/data.json');
+// Allow CORS - because of the two servers (http-server and node server app)
+const cors = require('cors');
 
 class App {
   public express;
@@ -12,6 +14,8 @@ class App {
 
   constructor() {
     this.express = express();
+    this.express.use(cors());
+
     this.initDatabase();
     this.mountRoutes();
   }
