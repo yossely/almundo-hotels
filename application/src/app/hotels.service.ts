@@ -6,6 +6,8 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 
+import isUrl = require('is-url');
+
 import { Hotel } from './hotel.model';
 import { environment } from '../environments/environment';
 
@@ -38,22 +40,7 @@ export class HotelsService {
    * Get hotels information from the API
    */
   getAllHotels() {
-    this.http.get(this.apiUrl + 'hotels')
-      // Clear the hotels array to set the new results on it
-      .do(() => {
-        this.hotels.length = 0;
-      })
-      // Get the hotels array and return one by one
-      .switchMap((hotels: Array<Hotel>) => hotels)
-      // Set image url for every hotel
-      .map((hotel: Hotel) => {
-        hotel.image = 'assets/images/hotels/' + hotel.image;
-        return hotel;
-      })
-      // Push every hotel into the `hotels` property
-      .subscribe((hotel: Hotel) => {
-        this.hotels.push(hotel);
-      });
+    this.getHotelsFromAPI(this.apiUrl + 'hotels');
   }
 
   /**
@@ -77,7 +64,16 @@ export class HotelsService {
       filterUrl = `${this.apiUrl}hotels?stars=${stars}`;
     }
 
-    this.http.get(filterUrl)
+    this.getHotelsFromAPI(filterUrl);
+  }
+
+  /**
+   * Perform the http get request to fetch the hotels information
+   *
+   * @param url - url to perform the http get request to fetch the hotels information
+   */
+  getHotelsFromAPI(url: string) {
+    this.http.get(url)
       // Clear the hotels array to set the new results on it
       .do(() => {
         this.hotels.length = 0;
@@ -86,7 +82,9 @@ export class HotelsService {
       .switchMap((hotels: Array<Hotel>) => hotels)
       // Set image url for every hotel
       .map((hotel: Hotel) => {
-        hotel.image = 'assets/images/hotels/' + hotel.image;
+        if (!isUrl(hotel.image)) {
+          hotel.image = 'assets/images/hotels/' + hotel.image;
+        }
         return hotel;
       })
       // Push every hotel into the `hotels` property

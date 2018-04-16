@@ -6,6 +6,7 @@ const FileSync = require('lowdb/adapters/FileSync')
 const adapter = new FileSync('./database/data.json');
 // Allow CORS - because of the two servers (http-server and node server app)
 const cors = require('cors');
+const shortid = require('shortid');
 
 class App {
   public express;
@@ -14,6 +15,9 @@ class App {
 
   constructor() {
     this.express = express();
+    // Support JSON-encoded bodies
+    this.express.use(express.json());
+    // User cors
     this.express.use(cors());
 
     this.initDatabase();
@@ -42,13 +46,78 @@ class App {
       }
 
       res.json(hotels)
-    })
+    });
 
-    // Root route
-    router.get('/', (req, res) => {
-      res.json({
-        message: 'Hello World!!'
-      })
+    // Create a new hotel
+    router.post('/hotel', (req, res) => {
+      console.log('create new hotel');
+      const newHotel = req.body;
+      // Generate a unique `id` for the new hotel
+      newHotel.id = shortid.generate();
+
+      const validationMessage = this.isHotelValid(newHotel);
+
+      if (validationMessage === '') {
+        this.db.get('hotels')
+          .push(newHotel)
+          .write();
+
+        res.json({
+          message: 'Great! Hotel created successfully'
+        })
+      } else {
+        res.status(400).send({
+          message: validationMessage
+        });
+      }
+    });
+
+    // Remove hotel
+    router.delete('/hotel/:hotelId', (req, res) => {
+      console.log('delete hotel with ID:', req.params.hotelId);
+
+      if (this.hotelExists(req.params.hotelId)) {
+        this.db.get('hotels')
+          .remove({ id: req.params.hotelId })
+          .write()
+
+        res.json({
+          message: 'Hotel removed successfully'
+        })
+      } else {
+        res.status(400).send({
+          message: `The hotel with id ${req.params.hotelId} does not exists`
+        });
+      }
+    });
+
+    // Create a new hotel
+    router.put('/hotel/:hotelId', (req, res) => {
+      console.log('update hotel with id', req.params.hotelId);
+      const hotelInfo = req.body;
+
+      const validationMessage = this.isHotelValid(hotelInfo);
+
+      if (this.hotelExists(req.params.hotelId) && validationMessage === '') {
+        this.db.get('hotels')
+          .find({ id: req.params.hotelId })
+          .assign(hotelInfo)
+          .write();
+
+        res.json({
+          message: 'Great! Hotel updated successfully'
+        })
+      } else {
+        if (validationMessage !== '') {
+          res.status(400).send({
+            message: validationMessage
+          });
+        } else {
+          res.status(400).send({
+            message: `The hotel with id ${req.params.hotelId} does not exists`
+          });
+        }
+      }
     })
 
     // Initialize router for the express application
@@ -69,7 +138,7 @@ class App {
     console.log('get all hotels')
     return this.db
       .get('hotels')
-      .value();;
+      .value();
   }
 
   /**
@@ -138,6 +207,48 @@ class App {
         return hotelName.includes(name) && (stars.indexOf(hotel.stars) !== -1);
       })
       .value();
+  }
+
+  /**
+   * Check the hotel to validate that all the information required is present
+   *
+   * @param {Object} hotel - new hotel information to check
+   * @return {string} - error message if found or empty string if everything goes well
+   */
+  private isHotelValid(hotel): string {
+
+    if (!hotel.name || (typeof hotel.name !== 'string')) {
+      return 'Check hotel name';
+    } else if (!hotel.stars || (typeof hotel.stars !== 'number')) {
+      return 'Check hotel stars';
+    } else if (!hotel.price || (typeof hotel.price !== 'number')) {
+      return 'Check hotel price';
+    } else if (!hotel.image || (typeof hotel.image !== 'string')) {
+      return 'Check hotel image';
+    } else if (!hotel.amenities) {
+      return 'Check hotel amenities';
+    }
+
+    return '';
+  }
+
+  /**
+   * Check if the hotel exists based on the id received via parameter
+   *
+   * @param {string} hotelId - hotel id to find in the hotels list
+   * @return {boolean} - true - Hotel exists
+   *                     false - Hotel doesn't exist
+   */
+  private hotelExists(hotelId: string): boolean {
+    const hotelResult = this.db
+      .get('hotels')
+      .filter((hotel) => hotel.id === hotelId)
+      .value()
+
+    if (hotelResult.length > 0) {
+      return true;
+    }
+    return false;
   }
 }
 
