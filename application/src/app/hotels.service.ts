@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 
 import { Hotel } from './hotel.model';
+import { environment } from '../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -19,9 +20,16 @@ export class HotelsService {
    */
   hotels: Array<Hotel>;
 
+  /**
+   * Handle the api Url based on the environment
+   */
+  apiUrl: string;
+
   constructor(private http: HttpClient) {
     // Init empty hotels
     this.hotels = new Array<Hotel>();
+
+    this.apiUrl = environment.apiUrl;
 
     this.getAllHotels();
   }
@@ -30,7 +38,7 @@ export class HotelsService {
    * Get hotels information from the API
    */
   getAllHotels() {
-    this.http.get('api/hotels')
+    this.http.get(this.apiUrl + 'hotels')
       // Clear the hotels array to set the new results on it
       .do(() => {
         this.hotels.length = 0;
@@ -60,13 +68,13 @@ export class HotelsService {
     let filterUrl = '';
     if (name !== '' && stars !== '') { // both filtered are set
       console.log('filter hotels by name and stars');
-      filterUrl = `api/hotels?name=${name}&stars=${stars}`;
+      filterUrl = `${this.apiUrl}hotels?name=${name}&stars=${stars}`;
     } else if (name !== '' && stars === '') { // filter only by name
       console.log('filter hotels by name');
-      filterUrl = `api/hotels?name=${name}`;
+      filterUrl = `${this.apiUrl}hotels?name=${name}`;
     } else if (name === '' && stars !== '') { // filter only by stars
       console.log('filter hotels by stars');
-      filterUrl = `api/hotels?stars=${stars}`;
+      filterUrl = `${this.apiUrl}hotels?stars=${stars}`;
     }
 
     this.http.get(filterUrl)
