@@ -79,7 +79,7 @@ export class FilterComponent implements OnInit {
     }
 
     if (this.isAnyStarsSelectedToFilter() || this.nameFilter !== '') {
-      console.log('filter hotels list');
+      // console.log('filter hotels list');
       this.hotelsService.filterHotels(this.nameFilter, this.getStarsFilterSelected());
 
       // Check or uncheck the `all` stars filter whether there is some stars filter selected or not
@@ -89,7 +89,7 @@ export class FilterComponent implements OnInit {
         this.allStarsFilter = true;
       }
     } else {
-      console.log('get all hotels');
+      // console.log('get all hotels');
       this.allStarsFilter = true;
       this.hotelsService.getAllHotels();
     }
