@@ -9,7 +9,7 @@ import 'rxjs/add/operator/do';
 import * as isUrl from 'is-url';
 
 import { Hotel } from './hotel.model';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -54,13 +54,13 @@ export class HotelsService {
     // Construct the url based on the parameters received
     let filterUrl = '';
     if (name !== '' && stars !== '') { // both filtered are set
-      console.log('filter hotels by name and stars');
+      // console.log('filter hotels by name and stars');
       filterUrl = `${this.apiUrl}hotels?name=${name}&stars=${stars}`;
     } else if (name !== '' && stars === '') { // filter only by name
-      console.log('filter hotels by name');
+      // console.log('filter hotels by name');
       filterUrl = `${this.apiUrl}hotels?name=${name}`;
     } else if (name === '' && stars !== '') { // filter only by stars
-      console.log('filter hotels by stars');
+      // console.log('filter hotels by stars');
       filterUrl = `${this.apiUrl}hotels?stars=${stars}`;
     }
 

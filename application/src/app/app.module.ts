@@ -6,18 +6,14 @@ import { FormsModule } from '@angular/forms';
 // Material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppComponent } from './app.component';
-import { HotelsService } from './hotels.service';
+import { HotelsService } from './core/hotels.service';
+
+import { HotelsModule } from './hotels/hotels.module';
+import { FilterModule } from './filter/filter.module';
 
 @NgModule({
   declarations: [
@@ -31,13 +27,9 @@ import { HotelsService } from './hotels.service';
     // Material
     BrowserAnimationsModule,
     MatToolbarModule,
-    MatExpansionModule,
-    MatCardModule,
-    MatIconModule,
-    MatDividerModule,
-    MatButtonModule,
-    MatInputModule,
-    MatCheckboxModule
+    // Application modules
+    HotelsModule,
+    FilterModule,
   ],
   providers: [HotelsService],
   bootstrap: [AppComponent]
