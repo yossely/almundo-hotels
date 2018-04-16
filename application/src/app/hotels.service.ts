@@ -6,7 +6,7 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 
-import isUrl = require('is-url');
+import * as isUrl from 'is-url';
 
 import { Hotel } from './hotel.model';
 import { environment } from '../environments/environment';
