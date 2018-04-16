@@ -9,7 +9,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -18,19 +17,18 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppComponent } from './app.component';
 import { HotelsService } from './core/hotels.service';
-import { HotelComponent } from './hotels/hotel/hotel.component';
-import { HotelsListComponent } from './hotels/hotels-list/hotels-list.component';
+
+import { HotelsModule } from './hotels/hotels.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    HotelComponent,
-    HotelsListComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
+    HotelsModule,
     FlexLayoutModule,
     // Material
     BrowserAnimationsModule,
@@ -38,7 +36,6 @@ import { HotelsListComponent } from './hotels/hotels-list/hotels-list.component'
     MatExpansionModule,
     MatCardModule,
     MatIconModule,
-    MatDividerModule,
     MatButtonModule,
     MatInputModule,
     MatCheckboxModule
