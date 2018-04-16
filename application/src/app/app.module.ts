@@ -17,7 +17,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppComponent } from './app.component';
-import { HotelsService } from './hotels.service';
+import { HotelsService } from './core/hotels.service';
 
 @NgModule({
   declarations: [

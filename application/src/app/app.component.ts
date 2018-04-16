@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
 
-import { HotelsService } from './hotels.service';
-import { Hotel } from './hotel.model';
+import { HotelsService } from './core/hotels.service';
+import { Hotel } from './core/hotel.model';
 
 @Component({
   selector: 'app-root',
