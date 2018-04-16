@@ -18,10 +18,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppComponent } from './app.component';
 import { HotelsService } from './core/hotels.service';
+import { HotelComponent } from './hotel/hotel.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HotelComponent
   ],
   imports: [
     BrowserModule,

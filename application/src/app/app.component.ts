@@ -137,16 +137,6 @@ export class AppComponent {
   }
 
   /**
-   * Get an array which length is the number of stars to use it in an ngFor directive
-   *
-   * @param {number} stars - number of stars of a hotel
-   * @returns {Array<number>}
-   */
-  numberOfStars(stars: number): Array<number> {
-    return new Array(stars).fill(stars);
-  }
-
-  /**
    * Initialize an array to handle the filter by stars functionality
    */
   initStarsFilter(): void {
